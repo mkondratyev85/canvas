@@ -3,3 +3,7 @@ class CanvasException(Exception):
 
     def __init__(self, msg):
         super(CanvasException, self).__init__(msg)
+
+class CanvasError(CanvasException):
+    pass
+

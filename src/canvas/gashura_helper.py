@@ -1,7 +1,8 @@
 import math
 from .canvas_units import CanvasUnitLinked
-from .shapes import Il, Glina, Galechnik, Valunnik, Gravyi, Sand, Dresva, Sheben, Spai, Andesit, Basalt, Andesibasalt, AndesibasaltTuff, Riolite, Granodiorite, Andesidacit, Dacit, Diorite
-from .canvas import Color, LineType
+from .shapes import Il, Glina, Galechnik, Valunnik, Gravyi, Sand, Dresva, Sheben, Spai, Andesit, Basalt, Andesibasalt, AndesibasaltTuff, Riolite, Granodiorite, Andesidacit, Dacit, Diorite, Granite
+from .shapes import create_shape_for_rock_and_aggregate
+from .canvas import LineType
 
 
 rock_shapes = {
@@ -15,7 +16,7 @@ rock_shapes = {
     "щебень": Sheben(),
     "спай": Spai(),
     "андезит": Andesit(),
-    "андезит": Dacit(),
+    "дацит": Dacit(),
     "базальт": Basalt(),
     "андезибазальт": Andesibasalt(),
     "андезидацит": Andesidacit(),
@@ -23,11 +24,11 @@ rock_shapes = {
     "риолит": Riolite(),
     "гранодиорит": Granodiorite(),
     "диорит": Diorite(),
-
+    "гранит": Granite(),
 }
 
 
-def fill_polygon_with_pattern(canvas_unit, rock, polygon, bounding_box, dip_function, color=None, scale=1, offset_factor=1):
+def fill_polygon_with_pattern(canvas_unit, rock, polygon, bounding_box, dip_function, aggregate=None, color=None, scale=1, offset_factor=1):
     """Draw hatches with new style."""
     if rock == "торф":
         fill_polygon_with_lines_vertical(canvas_unit, polygon=polygon, bounding_box=bounding_box)
@@ -45,6 +46,12 @@ def fill_polygon_with_pattern(canvas_unit, rock, polygon, bounding_box, dip_func
         else:
             print(f"Can't find shape for {rock}")
             return
+        shape = rock_shapes[rock]
+        if aggregate:
+            if aggregate not in rock_shapes:
+                return
+            aggregate_shape = rock_shapes[aggregate]
+            shape = create_shape_for_rock_and_aggregate(shape, aggregate_shape)
 
         fill_polygon_with_shapes(
             canvas_unit,

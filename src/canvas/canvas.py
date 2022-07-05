@@ -155,9 +155,10 @@ class Canvas:
                 logger.info(exception)
             except BaseException as e:
                 print(e)
-                logger.exception(f"Ошибка при построении разреза {unit.name}")
-                logger.info(f"Ошибка при построении элемента разреза {unit.name}")
-                logger.info("Элемент не будет построен на разрезе")
+                raise
+                # logger.exception(f"Ошибка при построении разреза {unit.name}")
+                # logger.info(f"Ошибка при построении элемента разреза {unit.name}")
+                # logger.info("Элемент не будет построен на разрезе")
 
     def place_units(self):
         """Call __place__ for each unit."""

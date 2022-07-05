@@ -1,5 +1,6 @@
 """Module for shapes used by gashura."""
 
+import random
 from abc import ABC
 from typing import Tuple, Generator, Iterable
 import math
@@ -120,12 +121,20 @@ class Shape(ABC):
             canvas_unit.draw_lines(points, width=self.line_width*scale, color=color)
 
 
+def create_shape_for_rock_and_aggregate(rock_shape, aggregate_shape):
+    # return MultiShape(shapes = (rock_shape, rock_shape, aggregate_shape))
+    return RandomMultiShape(shapes = (rock_shape, rock_shape, aggregate_shape))
+
+
+
 class MultiShape(Shape):
     """As Shape but consists of repiting different shapes."""
 
     shapes = Tuple[Shape]
 
-    def __init__(self):
+    def __init__(self, shapes=None):
+        if shapes:
+            self.shapes = shapes
         self.iterator = cycle(self.shapes)
 
     def draw(
@@ -147,6 +156,26 @@ class MultiShape(Shape):
         """
         shape = next(self.iterator)
         shape.draw(position, angle, canvas_unit, polygon, color=color, scale=scale)
+
+
+class RandomMultiShape(MultiShape):
+
+    def draw(
+        self,
+        position: Tuple[float, float],
+        angle: float,
+        canvas_unit: CanvasUnitLinked,
+        polygon=None,
+        color=None,
+        scale=1,
+    ) -> None:
+        seed = int(position[0] * 10000 + position[1]*10)
+        random.seed(seed)
+        shape = random.choice(self.shapes)
+        shape.draw(position, angle, canvas_unit, 
+                polygon=polygon,
+                color=color,
+                scale=scale)
 
 
 class Glina(Shape):
