@@ -9,5 +9,6 @@ setup(name='canvas',
       install_requires=[
           'pyclipper',
           'ezdxf',
+          'cairo',
           ]
       )
