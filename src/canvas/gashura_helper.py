@@ -32,6 +32,8 @@ def fill_polygon_with_pattern(canvas_unit, rock, polygon, bounding_box, dip_func
     """Draw hatches with new style."""
     if rock == "торф":
         fill_polygon_with_lines_vertical(canvas_unit, polygon=polygon, bounding_box=bounding_box)
+    elif rock == "прс":
+        fill_polygon_with_lines_vertical(canvas_unit, polygon=polygon, bounding_box=bounding_box, dx_mm=1.0)
     elif rock == "коренные породы":
         fill_polygon_with_lines_diagonal(
             canvas_unit, polygon=polygon, bounding_box=bounding_box, alter_linetype=True
@@ -65,11 +67,10 @@ def fill_polygon_with_pattern(canvas_unit, rock, polygon, bounding_box, dip_func
         )
 
 
-def fill_polygon_with_lines_vertical(canvas_unit, polygon, bounding_box) -> None:
+def fill_polygon_with_lines_vertical(canvas_unit, polygon, bounding_box, dx_mm=2.0) -> None:
     """Draw lines inside polygon."""
     x0, x1, y0, y1 = bounding_box
 
-    dx_mm = 2.0
     if isinstance(canvas_unit, CanvasUnitLinked):
         dx_m = canvas_unit.mm_to_m_horizontal(dx_mm)
     else:
