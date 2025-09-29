@@ -2,6 +2,7 @@ import math
 from .canvas_units import CanvasUnitLinked
 from .shapes import Il, Glina, Galechnik, Valunnik, Gravyi, Sand, Dresva, Sheben, Spai, Andesit, Basalt, Andesibasalt, AndesibasaltTuff, Riolite, Granodiorite, Andesidacit, Dacit, Diorite, Granite
 from .shapes import create_shape_for_rock_and_aggregate
+from .shapes import create_shape_for_rock_and_aggregates
 from .canvas import LineType
 
 
@@ -50,10 +51,15 @@ def fill_polygon_with_pattern(canvas_unit, rock, polygon, bounding_box, dip_func
             return
         shape = rock_shapes[rock]
         if aggregate:
-            if aggregate not in rock_shapes:
-                return
-            aggregate_shape = rock_shapes[aggregate]
-            shape = create_shape_for_rock_and_aggregate(shape, aggregate_shape)
+            aggregate_shapes = []
+            if isinstance(aggregate, str):
+                aggregate = [aggregate]
+            for r in aggregate:
+                if r not in rock_shapes:
+                    return
+                # aggregate_shape = rock_shapes[aggregate]
+                aggregate_shapes.append(rock_shapes[r])
+            shape = create_shape_for_rock_and_aggregates(shape, aggregate_shapes)
 
         fill_polygon_with_shapes(
             canvas_unit,

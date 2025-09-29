@@ -125,6 +125,9 @@ def create_shape_for_rock_and_aggregate(rock_shape, aggregate_shape):
     # return MultiShape(shapes = (rock_shape, rock_shape, aggregate_shape))
     return RandomMultiShape(shapes = (rock_shape, rock_shape, aggregate_shape))
 
+def create_shape_for_rock_and_aggregates(rock_shape, aggregate_shapes):
+    # return MultiShape(shapes = (rock_shape, rock_shape, aggregate_shape))
+    return RandomMultiShape(shapes = (rock_shape, rock_shape, *aggregate_shapes))
 
 
 class MultiShape(Shape):
